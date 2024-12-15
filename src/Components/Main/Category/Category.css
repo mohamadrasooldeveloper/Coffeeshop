@@ -1,0 +1,11 @@
+.Category__right {
+    background: linear-gradient(to left, rgba(0,0,0,0.6) 33.85%, rgba(243,244,246,0.1) 100%), url('/public/Images/categories/category-right.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.Category__left {
+    background: linear-gradient(to left, rgba(0,0,0,0.6) 33.85%, rgba(243,244,246,0.1) 100%), url('/public/Images/categories/category-left.jpg');
+    background-size: cover;
+    background-position: center;
+}

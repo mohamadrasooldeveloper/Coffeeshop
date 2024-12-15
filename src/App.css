@@ -1,0 +1,30 @@
+:root{
+    --black:#333;
+    --white:#fff;
+    --grey:#D1D5DB;
+    --yellow:#FED7AA;
+    --orange:#fdba74;
+    --green:#0D9488;
+    --grey2:#3f3f46;
+    --grey3:#F3F4F6;
+}
+:root.dark {
+    --bg-color: #27272a;
+    --text-color: #ffffff;
+    --header-bg: #1e1e1e;
+    --card-bg: #242424;
+    --border-color: #444444;
+  }
+  
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: var(--grey3);
+}
+body.dark {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}

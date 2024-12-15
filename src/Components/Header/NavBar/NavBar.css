@@ -1,0 +1,122 @@
+.NavBar{
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin: 36px auto 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-radius: 1.5rem;
+    height: 5rem;
+    width: inherit;
+    backdrop-filter: blur(5px);
+    z-index: 99;
+} 
+
+.NavBar__menu{
+    display: flex;
+    gap:2rem ;
+    align-items: center;
+}
+.NavBar__item{
+    color: var(--grey);
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    
+}
+.NavBar__item li:hover{
+    color: var(--yellow);
+    transition: all 250ms ease-in;
+}
+.NavBar__left{
+    color: var(--grey);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+.icon{
+    display: flex;
+    font-size: 30px;
+    color: var(--yellow);
+    gap: 20px;
+}
+.icon a {
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.icon a:hover {
+    color: var(--orange);
+    transform: scale(1.1);
+}
+.icon__dark button{
+    color: var(--yellow);
+}
+.icon__dark button:hover{
+    color: var(--orange);
+}
+.NavBar__login{
+    display: flex;
+    font-size: 1.2rem;
+}
+.NavBar__login a{
+    color: var(--yellow);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.Cart {
+    position: absolute;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 400px;
+    height: auto;
+    background-color: var(--white);
+    border-radius: 16px;
+    padding: 24px;
+    border-top: 3px solid var(--orange);
+    font-size: 16px;
+    top: 160%;
+    left: 0;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    color: var(--black);
+}
+
+.icon:hover .Cart,
+.Cart:hover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
+.Cart__button{
+    width: 256px;
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    padding: 14px 45px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin-bottom: 63px;
+}

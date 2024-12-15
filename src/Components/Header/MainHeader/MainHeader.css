@@ -1,0 +1,10 @@
+.MainHeader{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+.MainHeader h1{
+    color: var(--white);
+    line-height: 1.2;
+}

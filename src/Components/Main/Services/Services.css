@@ -1,0 +1,32 @@
+.Services{
+    position: relative;
+}
+.Services::after,
+.Services::before{
+    content: "";
+    display: block;
+    position: absolute;
+    margin: auto;
+    inset: 0;
+    background-color: var(--grey);
+}
+@media (min-width:640px){
+    .Services::after,
+    .Services::before{
+            content: none;
+}
+}
+html.dark .Services::after,
+html.dark .Services::before{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.Services::after{
+    width: 1px;
+    height: calc(100% + 1.25rem);
+}
+.Services::before{
+    width: calc(100% - 2rem);
+    height: 1px;
+}
+   
+
