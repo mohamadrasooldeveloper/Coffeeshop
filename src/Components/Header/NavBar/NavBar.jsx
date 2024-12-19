@@ -152,7 +152,7 @@ export default function NavBar() {
                       هنوز محصولی به سبد خرید اضافه نشده
                     </h4>
                     <button
-                      className="Cart__button bg-teal-600 hover:bg-emerald-600 dark:bg-emerald-500"
+                      className="Cart__button bg-teal-600 hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-600"
                     >
                       مشاهده صفحه فروشگاه
                     </button>

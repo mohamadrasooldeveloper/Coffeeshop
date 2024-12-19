@@ -4,21 +4,23 @@
 The coffee shop is a professional and user-friendly project that provides an online shopping experience with a shopping cart and is optimized for viewing on tablets and mobile phones.
 
 ## 🖼️ Project Image
-![Project Image](./public/Images/CoffeeShop.png)
+![Project Image](/public/Images/CoffeeShop.png)
 
 ## ⚙️ Technologies  
 This project has been designed using the following technologies:
-● [React](https://reactjs.org/)  
-● [HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML)  
-● [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)  
-● [tailwindcss](https://tailwindcss.com/)  
+
+- [React](https://reactjs.org/)  
+- [HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML)  
+- [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)  
+- [tailwindcss](https://tailwindcss.com/)  
 
 ## 🚀 Features  
-● **Optimized for Tablets**: The project is designed to display seamlessly on tablets.  
-● **Optimized for Mobile Phones**: Ensures a user-friendly experience on smartphones.  
-● **Shopping Cart**: Includes a shopping cart feature for easy online purchases. 
-● **Responsive Design**: Works flawlessly on devices of all screen sizes.  
-● **Modern UI/UX**: Designed with a sleek and intuitive user interface.
+
+- **Optimized for Tablets**: The project is designed to display seamlessly on tablets.  
+- **Optimized for Mobile Phones**: Ensures a user-friendly experience on smartphones.  
+- **Shopping Cart**: Includes a shopping cart feature for easy online purchases. 
+- **Responsive Design**: Works flawlessly on devices of all screen sizes.  
+- **Modern UI/UX**: Designed with a sleek and intuitive user interface.
 
 # Getting Started with Create React App
 
