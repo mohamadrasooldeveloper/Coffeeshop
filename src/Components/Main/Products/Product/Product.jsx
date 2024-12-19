@@ -5,8 +5,7 @@ import { MdOutlineLocalGroceryStore } from "react-icons/md";
 import { FaRegStar } from "react-icons/fa";
 import { useCart } from '../../../ContextCart/ContextCart';
 import products from './products'; 
-import { HiMiniXMark } from "react-icons/hi2";
-
+import ToastCart from '../../ToastCart/ToastCart';
 
 
 export default function Product() {
@@ -14,10 +13,9 @@ export default function Product() {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   
-  
   const handleAddToCart = (product) => {
     if (product.desc === "فعلا موجود نیست"){
-      setErrorMessage('محصول فعلا موجود نیست');
+      setErrorMessage('محصول فعلا موجود نیست!');
       setTimeout(() => setErrorMessage(null), 3000)
 
     } else{
@@ -76,25 +74,18 @@ export default function Product() {
             <div className="Product__star flex items-center">
               {[...Array(5)].map((_, index) => (
                 <FaRegStar key={index} className={ index < product.rating ? "text-gray-300 w-4 h-4 md:w-6 md:h-6" : "text-yellow-400 w-4 h-4 md:w-6 md:h-6"}/>
-                
               ))}
             </div>
           </div>
           
         </div>
       ))}
-        {successMessage &&(
-        <div className="success-message flex items-center gap-4 p-2 shadow-Normal fixed bottom-4 right-4 bg-teal-600 text-white text-center py-3 rounded-xl transform transition-all duration-500 ease-in-out">
-          {successMessage}
-          <HiMiniXMark size={26} className='cursor-pointer' onClick={() => setSuccessMessage(null)}/>
-        </div>
-      )}
-      {errorMessage && (
-         <div className="flex items-center gap-4 p-2 shadow-Normal fixed bottom-4 right-4 bg-red-400 text-white text-center py-3 rounded-xl transform transition-all duration-500 ease-in-out">
-         {errorMessage}
-         <HiMiniXMark size={26} className='cursor-pointer' onClick={() => setErrorMessage(null)}/>
-       </div>
-      )}
+      <ToastCart
+      errorMessage={errorMessage}
+      successMessage={successMessage}
+      onCloseSuccess={() => setSuccessMessage(null)}
+      onCloseError={() => setErrorMessage(null)}
+      />
     </div>
     
   );
