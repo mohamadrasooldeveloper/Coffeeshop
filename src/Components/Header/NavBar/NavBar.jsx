@@ -23,7 +23,7 @@ export default function NavBar() {
   const [timeoutId, setTimeoutId] = useState(null);
   const [isDelayActive, setIsDelayActive] = useState(false);
   const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // مدیریت مودال
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const totalAmount = useMemo(
     () => cartItems.reduce((total, item) => total + item.price, 0),
@@ -34,7 +34,7 @@ export default function NavBar() {
   const handleOk = () => setIsModalOpen(false);
   const handleCancel = () => setIsModalOpen(false);
 
-  
+
   const toggleShopMenu = () => {
     setIsShopMenuOpen(!isShopMenuOpen);
   };
@@ -180,24 +180,24 @@ export default function NavBar() {
                             <h4 className="text-zinc-700 dark:text-white">{item.name}</h4>
                             <div className="flex items-center gap-5">
                             <div className="flex items-center justify-center border-[1px] rounded-[100px] border-gray-300">
-  <span className="text-orange-300 px-[14px] font-black cursor-pointer">
-    <HiOutlinePlus size={25} />
-  </span>
-  <span className="text-orange-300 text-[25px] pt-[8px]">1</span>
-  <span className="text-orange-300 px-[14px] cursor-pointer" onClick={showModal}>
-    <FiTrash2 size={25} />
-  </span>
-  <Modal
-    title="تأیید حذف"
-    open={isModalOpen}
-    onOk={handleOk}
-    onCancel={handleCancel}
-    okText="بله، حذف کن"
-    cancelText="لغو"
-  >
-    <p>آیا از حذف این آیتم مطمئن هستید؟</p>
-  </Modal>
-</div>
+                                <span className="text-orange-300 px-[14px] font-black cursor-pointer">
+                                <HiOutlinePlus size={25} />
+                              </span>
+                              <span className="text-orange-300 text-[25px] pt-[8px]">1</span>
+                              <span className="text-orange-300 px-[14px] cursor-pointer" onClick={showModal}>
+                                <FiTrash2 size={25} />
+                              </span>
+                              <Modal
+                                title="تأیید حذف"
+                                open={isModalOpen}
+                                onOk={handleOk}
+                                onCancel={handleCancel}
+                                okText="بله، حذف کن"
+                                cancelText="لغو"
+                              >
+                                <p>آیا از حذف این آیتم مطمئن هستید؟</p>
+                              </Modal>
+                            </div>
 
                               <div className="flex flex-col">
                                 <span className="text-teal-600">14,500 تخفیف</span>
