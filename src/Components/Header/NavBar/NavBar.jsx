@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from "react-router-dom";
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
 import { IoMoonOutline } from "react-icons/io5";
@@ -8,7 +8,8 @@ import { FiShoppingCart } from "react-icons/fi";
 import { useCart } from '../../ContextCart/ContextCart';
 import { FiTrash2 } from "react-icons/fi";
 import { HiOutlinePlus } from 'react-icons/hi';
-
+import { Modal, Button } from "antd";
+import CustomModal  from '../../Modal/Modal';
 
 import './NavBar.css';
 import './NavBar.media.css';
@@ -22,12 +23,17 @@ export default function NavBar() {
   const [timeoutId, setTimeoutId] = useState(null);
   const [isDelayActive, setIsDelayActive] = useState(false);
   const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // مدیریت مودال
 
-  const handleDeleteItem = (itemId) => {
-    if (window.confirm("آیا از حذف این محصول مطمئن هستید؟")) {
-      setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-    }
-  };
+  const totalAmount = useMemo(
+    () => cartItems.reduce((total, item) => total + item.price, 0),
+    [cartItems]
+  );
+  
+  const showModal = () => setIsModalOpen(true);
+  const handleOk = () => setIsModalOpen(false);
+  const handleCancel = () => setIsModalOpen(false);
+
   
   const toggleShopMenu = () => {
     setIsShopMenuOpen(!isShopMenuOpen);
@@ -173,15 +179,26 @@ export default function NavBar() {
                           <div className="flex flex-col gap-y-[28px]">
                             <h4 className="text-zinc-700 dark:text-white">{item.name}</h4>
                             <div className="flex items-center gap-5">
-                              <div className="flex items-center justify-center border-[1px]  rounded-[100px] border-gray-300">
-                                <span className="text-orange-300 px-[14px] font-black cursor-pointer">
-                                  <HiOutlinePlus size={25}/>
-                                </span>
-                                <span className="text-orange-300 text-[25px] pt-[8px]">1</span>
-                                <span className="text-orange-300 px-[14px] cursor-pointer" onClick={handleDeleteItem}>
-                                  <FiTrash2 size={25}/>
-                                </span>
-                              </div>
+                            <div className="flex items-center justify-center border-[1px] rounded-[100px] border-gray-300">
+  <span className="text-orange-300 px-[14px] font-black cursor-pointer">
+    <HiOutlinePlus size={25} />
+  </span>
+  <span className="text-orange-300 text-[25px] pt-[8px]">1</span>
+  <span className="text-orange-300 px-[14px] cursor-pointer" onClick={showModal}>
+    <FiTrash2 size={25} />
+  </span>
+  <Modal
+    title="تأیید حذف"
+    open={isModalOpen}
+    onOk={handleOk}
+    onCancel={handleCancel}
+    okText="بله، حذف کن"
+    cancelText="لغو"
+  >
+    <p>آیا از حذف این آیتم مطمئن هستید؟</p>
+  </Modal>
+</div>
+
                               <div className="flex flex-col">
                                 <span className="text-teal-600">14,500 تخفیف</span>
                                 <span className="text-zinc-700 dark:text-white">
@@ -198,7 +215,7 @@ export default function NavBar() {
                       <div className="flex flex-col">
                         <span className="text-gray-500">مبلغ قابل پرداخت:</span>
                         <span className="text-zinc-700 font-black text-[20px] dark:text-white">
-                          {cartItems.reduce((total, item) => total + item.price, 0)} تومان
+                          {totalAmount} تومان
                         </span>
                       </div>
                       <button className="py-[14px] px-[28px] bg-teal-600 hover:bg-emerald-600 dark:bg-emerald-500 text-white rounded-xl">
@@ -225,5 +242,6 @@ export default function NavBar() {
         </div>
       </div>
     </div>
+  
   );
 }
