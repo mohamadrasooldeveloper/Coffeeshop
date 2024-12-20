@@ -8,8 +8,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { useCart } from '../../ContextCart/ContextCart';
 import { FiTrash2 } from "react-icons/fi";
 import { HiOutlinePlus } from 'react-icons/hi';
-import { Modal, Button } from "antd";
-import CustomModal  from '../../Modal/Modal';
+import DeleteModal  from '../../Modal/Modal';
 
 import './NavBar.css';
 import './NavBar.media.css';
@@ -24,15 +23,29 @@ export default function NavBar() {
   const [isDelayActive, setIsDelayActive] = useState(false);
   const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const totalAmount = useMemo(
     () => cartItems.reduce((total, item) => total + item.price, 0),
     [cartItems]
   );
   
-  const showModal = () => setIsModalOpen(true);
-  const handleOk = () => setIsModalOpen(false);
-  const handleCancel = () => setIsModalOpen(false);
+    const showModal = (item) => {
+    setItemToDelete(item);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = () => {
+    if (itemToDelete) {
+      setCartItems(cartItems.filter(item => item !== itemToDelete));
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setItemToDelete(null);
+  };
 
 
   const toggleShopMenu = () => {
@@ -89,6 +102,7 @@ export default function NavBar() {
       document.documentElement.classList.add('dark');
     }
   }, []);
+  
 
   const toggleTheme = () => {
     const newMode = !darkMode;
@@ -184,19 +198,14 @@ export default function NavBar() {
                                 <HiOutlinePlus size={25} />
                               </span>
                               <span className="text-orange-300 text-[25px] pt-[8px]">1</span>
-                              <span className="text-orange-300 px-[14px] cursor-pointer" onClick={showModal}>
+                              <span className="text-orange-300 px-[14px] cursor-pointer"onClick={() => showModal(item)}>
                                 <FiTrash2 size={25} />
                               </span>
-                              <Modal
-                                title="تأیید حذف"
-                                open={isModalOpen}
-                                onOk={handleOk}
-                                onCancel={handleCancel}
-                                okText="بله، حذف کن"
-                                cancelText="لغو"
-                              >
-                                <p>آیا از حذف این آیتم مطمئن هستید؟</p>
-                              </Modal>
+                              <DeleteModal 
+                              isOpen={isModalOpen}
+                              onDelete={handleDelete}
+                             onCancel={handleCancel}
+                               />
                             </div>
 
                               <div className="flex flex-col">
