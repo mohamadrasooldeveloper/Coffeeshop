@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link } from "react-router-dom";
+import Shopmenu from './Shopmenu';
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
 import { IoMoonOutline } from "react-icons/io5";
 import { TbLogin2 } from "react-icons/tb";
@@ -24,11 +25,18 @@ export default function NavBar() {
   const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-
-  const totalAmount = useMemo(
-    () => cartItems.reduce((total, item) => total + item.price, 0),
-    [cartItems]
+  const [itemCounts, setItemCounts] = useState({});
+  const [totalAmount, setTotalAmount] = useState(
+    cartItems.reduce((total, item) => total + item.price, 0)
   );
+  
+  useEffect(() => {
+    const updatedTotal = cartItems.reduce((total, item) => total + item.price, 0);
+    setTotalAmount(updatedTotal);
+  }, [cartItems]);
+  
+  
+  
   
     const showModal = (item) => {
     setItemToDelete(item);
@@ -38,6 +46,7 @@ export default function NavBar() {
   const handleDelete = () => {
     if (itemToDelete) {
       setCartItems(cartItems.filter(item => item !== itemToDelete));
+      setTotalAmount(cartItems.reduce((total, item) => total + item.price, 0));
     }
     setIsModalOpen(false);
   };
@@ -46,6 +55,23 @@ export default function NavBar() {
     setIsModalOpen(false);
     setItemToDelete(null);
   };
+
+  const addcount = (item) => {
+    setItemCounts((prevCounts) => {
+      const newCount = (prevCounts[item.id] || 0) + 1;
+      const updatedCounts = { ...prevCounts, [item.id]: newCount };
+      const newTotalAmount = cartItems.reduce((total, cartItem) => {
+        const itemCount = updatedCounts[cartItem.id] || 1;
+        return total + cartItem.price * itemCount;
+      }, 0);
+      setTotalAmount(newTotalAmount);
+  
+      return updatedCounts;
+    });
+  };
+  
+  
+  
 
 
   const toggleShopMenu = () => {
@@ -122,19 +148,8 @@ export default function NavBar() {
           onMouseLeave={toggleShopMenu}
           className='relative'
         >
-          <Link to="/shop"> فروشگاه</Link>
-          {isShopMenuOpen && (
-            <div className="submenu absolute w-[208px] pt-[21px] px-6 bg-white dark:bg-zinc-700 rounded-2xl border-t-[3px] border-t-orange-300">
-              <ul className=' hover:text-orange-300 leading-6 pb-4'>
-                <li  className='pb-4'><Link className='text-[16px] text-zinc-700 dark:text-white hover:text-orange-300 dark:hover:text-orange-300'>قهوه ویژه</Link></li>
-                <li  className='pb-4'><Link className='text-[16px] text-zinc-700 dark:text-white hover:text-orange-300 dark:hover:text-orange-300'>ویژه در سطح جهانی</Link></li>
-                <li  className='pb-4'><Link className='text-[16px] text-zinc-700 dark:text-white hover:text-orange-300 dark:hover:text-orange-300'>قهوه درجه یک</Link></li>
-                <li  className='pb-4'><Link className='text-[16px] text-zinc-700 dark:text-white hover:text-orange-300 dark:hover:text-orange-300'>ترکیبات تجاری</Link></li>
-                <li  className='pb-4'><Link className='text-[16px] text-zinc-700 dark:text-white hover:text-orange-300 dark:hover:text-orange-300'>کپسول قهوه</Link></li>
-                <li  className='pb-4'><Link className='text-[16px] text-zinc-700 dark:text-white hover:text-orange-300 dark:hover:text-orange-300'>قهوه زینو بریزیلی</Link></li>
-              </ul>
-            </div>
-          )}
+          <Link to="/shop" className='relative'> فروشگاه</Link>
+          <Shopmenu isOpen={isShopMenuOpen} />
         </li>
         <li><Link to="/dictionary"> دیکشنری</Link></li>
         <li><Link to="/blog"> بلاگ</Link></li>
@@ -192,14 +207,14 @@ export default function NavBar() {
                           />
                           <div className="flex flex-col gap-y-[28px]">
                             <h4 className="text-zinc-700 dark:text-white">{item.name}</h4>
-                            <div className="flex items-center gap-5">
+                            <div className="flex items-center gap-5 ">
                             <div className="flex items-center justify-center border-[1px] rounded-[100px] border-gray-300">
-                                <span className="text-orange-300 px-[14px] font-black cursor-pointer">
-                                <HiOutlinePlus size={25} />
+                                <span className="text-orange-300 px-[14px] font-black cursor-pointer" onClick={() => addcount(item)}>
+                                <HiOutlinePlus size={20} />
                               </span>
-                              <span className="text-orange-300 text-[25px] pt-[8px]">1</span>
+                              <span className="text-orange-300 text-[20px] pt-[8px]">{itemCounts[item.id] || 1}</span>
                               <span className="text-orange-300 px-[14px] cursor-pointer"onClick={() => showModal(item)}>
-                                <FiTrash2 size={25} />
+                                <FiTrash2 size={20} />
                               </span>
                               <DeleteModal 
                               isOpen={isModalOpen}
@@ -209,7 +224,7 @@ export default function NavBar() {
                             </div>
 
                               <div className="flex flex-col">
-                                <span className="text-teal-600">14,500 تخفیف</span>
+                                <span className="text-teal-600 text-[12px] ">14,500 تخفیف</span>
                                 <span className="text-zinc-700 dark:text-white">
                                   {item.price} تومان
                                 </span>
@@ -227,7 +242,7 @@ export default function NavBar() {
                           {totalAmount} تومان
                         </span>
                       </div>
-                      <button className="py-[14px] px-[28px] bg-teal-600 hover:bg-emerald-600 dark:bg-emerald-500 text-white rounded-xl">
+                      <button className="py-[14px] px-[28px] bg-teal-600 hover:bg-teal-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-xl">
                         ثبت سفارش
                       </button>
                     </div>
