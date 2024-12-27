@@ -5,6 +5,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import ProductsSales from "./ProductsSales";
+import { useCart } from '../../ContextCart/ContextCart';
+import ToastCart from "../ToastCart/ToastCart";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
 import { FaRegStar } from "react-icons/fa";
@@ -14,13 +16,35 @@ import { GoArrowSwitch } from "react-icons/go";
 const ProductSlider = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-  const [isReady, setIsReady] = useState(false);
+  const [swiperInstance,setSwiperInstance]= useState(null);
+  const { addToCart } = useCart(); 
+  const [ errorMessage,setErrorMessage]= useState(null);
+  const [successMessage,setSuccessMessage]= useState(null);
 
-  useEffect(() => {
+
+  const handleSwiperInit = (swiper) => {
+    setSwiperInstance(swiper); // ذخیره swiper instance
     if (prevRef.current && nextRef.current) {
-      setIsReady(true);
+      swiper.params.navigation.prevEl = prevRef.current;
+      swiper.params.navigation.nextEl = nextRef.current;
+      swiper.navigation.update(); // به‌روزرسانی ناوبری
     }
-  }, []);
+  };
+  const handleAddToCart = (product) => {
+    if (product.desc === "فعلا موجود نیست"){
+      setErrorMessage('محصول فعلا موجود نیست!');
+      setTimeout(() => setErrorMessage(null), 3000)
+
+    } else{
+      addToCart(product);
+      setSuccessMessage('محصول با موفقیت به سبد خرید اضافه شد');
+      setTimeout(() => setSuccessMessage(null), 3000);
+
+    }
+};
+
+
+
 
   return (
     <div className="relative">
@@ -50,8 +74,9 @@ const ProductSlider = () => {
         </div>
       </div>
 
-      {isReady && (
+      
         <Swiper
+          onSwiper={handleSwiperInit}
           spaceBetween={14}
           slidesPerView={4}
           navigation={{
@@ -92,13 +117,13 @@ const ProductSlider = () => {
                 <span className="discounte absolute top-[24px] right-[24px] text-zinc-700 dark:text-white bg-orange-300 pt-1 pb-[3px] px-[14px] rounded-[100px]">{product.discounte}</span>
               </>
             ) : product.price ? (
-              <span className='text-teal-600 text-[14px] md:text-[18px] font-bold'>
+              <span className='text-teal-600 text-[14px] md:text-[20px] font-bold'>
                 {product.price} تومان
               </span>
             ) : (
               product.desc && (
                 <div className="flex flex-col">
-                  <span className='text-red-400  text-[14px] md:text-[18px]'>
+                  <span className='text-red-400  text-[14px] md:text-[20px] font-black'>
                     {product.desc}
                   </span>
                   {product.discounte && (
@@ -113,25 +138,27 @@ const ProductSlider = () => {
                   <div className='Product__score flex justify-between md:justify-center lg:justify-between items-center'>
             <div className="Product__icon flex items-center">
              <Link className="Product__icon flex items-center" to="./Cart" >
-              <MdOutlineLocalGroceryStore className='bg-gray-100 text-gray-400  w-[26px] h-[26px] p-[5px] md:w-[36px] md:h-[36px] md:p-[7px] rounded-[24px] hover:text-white hover:bg-teal-600 cursor-pointer transition-all dark:bg-zinc-800 dark:hover:bg-teal-600 '/>
+              <MdOutlineLocalGroceryStore  onClick={() => handleAddToCart(product)}  className='transition-transform transform hover:scale-110 bg-gray-100 text-gray-400  w-[26px] h-[26px] p-[5px] md:w-[36px] md:h-[36px] md:p-[7px] rounded-[24px] hover:text-white hover:bg-teal-600 cursor-pointer transition-all dark:bg-zinc-800 dark:hover:bg-teal-600 '/>
              </Link>
               <GoArrowSwitch size={16} className='text-gray-400 w-4 h-4 md:w-9 md:h-7 mr-1 hover:text-teal-600'/>
             </div>
             <div className="Product__star flex items-center">
-              {[...Array(5)].map((_, index) => (
-                index < product.rating ? (
-                  <FaRegStar key={index} className="text-gray-300 w-4 h-4 md:w-[18px] md:h-6" />
-                ) : (
-                  <FaRegStar key={index} className="text-yellow-400  w-4 h-4  md:w-[18px] md:h-6" />
-                )
-              ))}
+               {[...Array(5)].map((_, index) => (
+                  <FaRegStar key={index} className={ index < product.rating ? "text-gray-300 w-4 h-4 md:w-6 md:h-6" : "text-yellow-400 w-4 h-4 md:w-6 md:h-6"}/>
+                ))}
             </div>
           </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
-      )}
+        <ToastCart
+      errorMessage={errorMessage}
+      successMessage={successMessage}
+      onCloseSuccess={() => setSuccessMessage(null)}
+      onCloseError={() => setErrorMessage(null)}
+      />
+      
     </div>
   );
 };
